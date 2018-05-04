@@ -20,9 +20,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.content.Intent
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import com.example.test.meetmap.R.layout.activity_map
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -95,50 +97,53 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     private fun attemptLogin() {
-        if (mAuthTask != null) {
-            return
-        }
-
-        // Reset errors.
-        email.error = null
-        password.error = null
-
-        // Store values at the time of the login attempt.
-        val emailStr = email.text.toString()
-        val passwordStr = password.text.toString()
-
-        var cancel = false
-        var focusView: View? = null
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
-            password.error = getString(R.string.error_invalid_password)
-            focusView = password
-            cancel = true
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(emailStr)) {
-            email.error = getString(R.string.error_field_required)
-            focusView = email
-            cancel = true
-        } else if (!isEmailValid(emailStr)) {
-            email.error = getString(R.string.error_invalid_email)
-            focusView = email
-            cancel = true
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView?.requestFocus()
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
-        }
+//        if (mAuthTask != null) {
+//            return
+//        }
+//
+//        // Reset errors.
+//        email.error = null
+//        password.error = null
+//
+//        // Store values at the time of the login attempt.
+//        val emailStr = email.text.toString()
+//        val passwordStr = password.text.toString()
+//
+//        var cancel = false
+//        var focusView: View? = null
+//
+//        // Check for a valid password, if the user entered one.
+//        if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
+//            password.error = getString(R.string.error_invalid_password)
+//            focusView = password
+//            cancel = true
+//        }
+//
+//        // Check for a valid email address.
+//        if (TextUtils.isEmpty(emailStr)) {
+//            email.error = getString(R.string.error_field_required)
+//            focusView = email
+//            cancel = true
+//        } else if (!isEmailValid(emailStr)) {
+//            email.error = getString(R.string.error_invalid_email)
+//            focusView = email
+//            cancel = true
+//        }
+//
+//        if (cancel) {
+//            // There was an error; don't attempt login and focus the first
+//            // form field with an error.
+//            focusView?.requestFocus()
+//        } else {
+//            // Show a progress spinner, and kick off a background task to
+//            // perform the user login attempt.
+//            showProgress(true)
+//            mAuthTask = UserLoginTask(emailStr, passwordStr)
+//            mAuthTask!!.execute(null as Void?)
+//        }
+//        println("itsfino")
+        val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
     }
 
     private fun isEmailValid(email: String): Boolean {
