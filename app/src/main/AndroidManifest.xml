@@ -36,6 +36,10 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_map"></activity>
+
+        <activity
+            android:name=".EventInfoActivity"
+            android:label="Meetmap"></activity>
     </application>
 
 </manifest>

@@ -143,6 +143,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 //        }
 //        println("itsfino")
         val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra("hasCoordinates", 0)
         startActivity(intent)
     }
 
