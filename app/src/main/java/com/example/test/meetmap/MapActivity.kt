@@ -22,13 +22,11 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLngBounds;
 import android.telecom.Call
 import com.example.test.meetmap.EventInfoActivity
-import okhttp3.OkHttpClient
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import com.github.kittinunf.fuel.httpGet
 import khttp.async
 import java.io.StringReader
 import java.util.*
@@ -36,7 +34,7 @@ import kotlin.concurrent.fixedRateTimer
 
 
 data class eventObject(
-        val id: Long,
+        val id: Int,
         val name: String,
         val owner: String,
         val tinyPic: String,
@@ -66,6 +64,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
     override fun onInfoWindowClick(marker: Marker) {
         var intent = Intent(this, EventInfoActivity::class.java)
+        val eventId = marker.tag as Int
+        intent.putExtra("id", eventId)
         startActivity(intent)
         /**
         Toast.makeText(this, "Info window clicked",
@@ -91,7 +91,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
         // Add a marker in Saratov and move the camera
         val saratovKirova = LatLng(51.533373, 46.020923)
-        mMap.addMarker(MarkerOptions().position(saratovKirova).title("Marker in Saratov"))
+        mMap.addMarker(MarkerOptions().position(saratovKirova).title("Marker in Saratov").snippet("This is some extremely short event description"))
 
         val extras = intent.extras ?: return
         if (extras.getInt("hasCoordinates") == 1) {
@@ -117,15 +117,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                     JsonReader(StringReader(this.text)).use { reader ->
                         reader.beginArray {
                             while (reader.hasNext()) {
-                                val person = klaxon.parse<eventObject>(reader)!!
-                                mapObjects.add(person)
+                                val thisEvent = klaxon.parse<eventObject>(reader)!!
+                                mapObjects.add(thisEvent)
                                 // println("Event should be added")
                             }
                         }
                     }
                 }
-
-
             }
             // Карта обновляется с некоторой периодичностью. Время в ms.
             val fixedRateTimer = fixedRateTimer(name = "hello-timer",
@@ -135,9 +133,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
                 for (i in 0 until mapObjects!!.size) {
                     val eventToShow = mapObjects[i]
+                    val eventText = "ID: ${eventToShow.id}"
                     // println("Event: $i $eventToShow ")
                     runOnUiThread {
-                        mMap.addMarker(MarkerOptions().position(LatLng(eventToShow.latitude, eventToShow.longitude)).title(eventToShow.name))
+                        val thisMarker = mMap.addMarker(MarkerOptions()
+                                .position(LatLng(eventToShow.latitude, eventToShow.longitude))
+                                .title(eventToShow.name)
+                                .snippet(eventText))
+                        thisMarker.tag = eventToShow.id
                     }
                 }
             }
@@ -152,7 +155,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
         // eventObject(0, "memes", "memelord", "mem.png", 50.0101, 101.0505, 5, 11, 17, 51)
         mMap.setOnInfoWindowClickListener(this)     // "Слушание" события при нажатии
-
     }
 
 
