@@ -8,20 +8,18 @@ import com.beust.klaxon.JsonReader
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Marker
 import java.util.Timer
 import kotlin.concurrent.schedule
 
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import khttp.get
 import android.widget.Toast
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.model.LatLngBounds;
 import android.telecom.Call
+import android.widget.Button
 import com.example.test.meetmap.EventInfoActivity
+import com.google.android.gms.maps.model.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -47,10 +45,12 @@ data class eventObject(
 )
 
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickListener {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickListener, GoogleMap.OnMapClickListener {
 
     private lateinit var mMap: GoogleMap
     private var HARDCODED = false
+    private var position = LatLng(51.533373, 46.020923)
+    var clickMarker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,39 +67,41 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
         val eventId = marker.tag as Int
         intent.putExtra("id", eventId)
         startActivity(intent)
-        /**
-        Toast.makeText(this, "Info window clicked",
-                Toast.LENGTH_SHORT).show()
-        /** Вместо написанного сверху по идее надо добавить intent перевода на другую activity
-         *  в параметры закинуть ID мероприятия. А на активите информации ловить intent,
-         *  который по данному ID запросит с сервера информацию об event. Чечня - круто!
-         */  */
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    override fun onMapClick(p0: LatLng?) {
+        clickMarker?.remove()
+        position = p0!!
+        Toast.makeText(this, "Текущая координата ${position.latitude}, ${position.longitude}"
+                , Toast.LENGTH_LONG).show()
+        clickMarker = mMap.addMarker(MarkerOptions()
+                .position(LatLng(position.latitude, position.longitude))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+        )
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         // Add a marker in Saratov and move the camera
-        val saratovKirova = LatLng(51.533373, 46.020923)
-        mMap.addMarker(MarkerOptions().position(saratovKirova).title("Marker in Saratov").snippet("This is some extremely short event description"))
+        val thisEventLat = intent.getDoubleExtra("latitudeCoord", 51.533373)
+        val thisEventLng = intent.getDoubleExtra("longitudeCoord", 46.020923)
+        println(thisEventLat)
+        println(thisEventLng)
+
+        clickMarker = mMap.addMarker(MarkerOptions()
+                .position(LatLng(thisEventLat, thisEventLng))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
 
         val extras = intent.extras ?: return
         if (extras.getInt("hasCoordinates") == 1) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(saratovKirova))
+            val eventCoord = LatLng(extras.getDouble("latitudeCoord"), extras.getDouble("longitudeCoord"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(eventCoord))
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f))
+            mMap.addMarker(MarkerOptions().position(eventCoord))
         }
         else {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(saratovKirova))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(thisEventLat, thisEventLng)))
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f))
             var mapObjects = arrayListOf<eventObject>()
             if (HARDCODED) { // Значение переменной забито в классе, DEBUG - TRUE, когда серверная готова - FALSE
@@ -125,16 +127,17 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                     }
                 }
             }
+
+            var lastSize = 0
             // Карта обновляется с некоторой периодичностью. Время в ms.
             val fixedRateTimer = fixedRateTimer(name = "hello-timer",
                     initialDelay = 10000, period = 10000) {
                 // println("Timer - CLICK")
-                runOnUiThread { mMap.clear() }
-
-                for (i in 0 until mapObjects!!.size) {
+                for (i in lastSize until mapObjects!!.size) {
                     val eventToShow = mapObjects[i]
                     val eventText = "ID: ${eventToShow.id}"
                     // println("Event: $i $eventToShow ")
+
                     runOnUiThread {
                         val thisMarker = mMap.addMarker(MarkerOptions()
                                 .position(LatLng(eventToShow.latitude, eventToShow.longitude))
@@ -143,6 +146,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                         thisMarker.tag = eventToShow.id
                     }
                 }
+                lastSize = mapObjects!!.size
             }
             try {
                 // Функция при запуске
@@ -155,6 +159,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
         // eventObject(0, "memes", "memelord", "mem.png", 50.0101, 101.0505, 5, 11, 17, 51)
         mMap.setOnInfoWindowClickListener(this)     // "Слушание" события при нажатии
+
+        mMap.setOnMapClickListener(this)
+        var btn_click_create = findViewById<Button>(R.id.btn_create_event)
+        btn_click_create.setOnClickListener {
+            // var intent = Intent(this, EventInfoActivity::class.java)
+            var intent = Intent(this, CreateEventActivity::class.java)
+            intent.putExtra("long", position.longitude)
+            intent.putExtra("lat", position.latitude)
+            startActivity(intent)
+        }
     }
 
 

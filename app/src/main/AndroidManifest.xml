@@ -41,6 +41,10 @@
         <activity
             android:name=".EventInfoActivity"
             android:label="Meetmap"></activity>
+
+        <activity
+            android:name=".CreateEventActivity"
+            android:label="Meetmap"></activity>
     </application>
 
 </manifest>
