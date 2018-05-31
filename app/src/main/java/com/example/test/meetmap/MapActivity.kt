@@ -110,7 +110,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
             } else {
                 // mocky:
                 val resp = khttp.async.get("http://q9315385.beget.tech/meetmap/api/event/read.php", headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"), onError = {
-                    // println("Error message: $message")
+                     println("Error message: $message")
                 }) {
                     println(this.headers)
                     println("Status Code: $statusCode")

@@ -25,7 +25,7 @@ class CreateEventActivity : AppCompatActivity() {
 
         val btn_create = findViewById<FloatingActionButton>(R.id.buttonCreate)
         btn_create.setOnClickListener{
-            val eventName = findViewById<EditText>(R.id.textEventName).text
+            val eventName = findViewById<EditText>(R.id.textEventName).text.toString()
             val eventDate = findViewById<EditText>(R.id.textEventDate).text
             val dateD = (if (eventDate[1] == '.') eventDate[0].toString() else eventDate.substring(0..1)).toInt()
             val dateM = (if (eventDate[1] == '.') eventDate.substring(2..(eventDate.length - 1)) else eventDate.substring(3..(eventDate.length - 1))).toInt()
