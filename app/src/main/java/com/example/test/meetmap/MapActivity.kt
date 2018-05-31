@@ -148,7 +148,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
             var lastSize = 0
             // Карта обновляется с некоторой периодичностью. Время в ms.
             val fixedRateTimer = fixedRateTimer(name = "hello-timer",
-                    initialDelay = 10000, period = 10000) {
+                    initialDelay = 1000, period = 2500) {
                 // println("Timer - CLICK")
                 for (i in lastSize until mapObjects!!.size) {
                     val eventToShow = mapObjects[i]

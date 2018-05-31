@@ -25,14 +25,17 @@ class CreateEventActivity : AppCompatActivity() {
 
         val btn_create = findViewById<FloatingActionButton>(R.id.buttonCreate)
         btn_create.setOnClickListener{
-            val eventName = findViewById<EditText>(R.id.textEventName).text.toString()
+            var eventName = findViewById<EditText>(R.id.textEventName).text.toString()
             val eventDate = findViewById<EditText>(R.id.textEventDate).text
             val dateD = (if (eventDate[1] == '.') eventDate[0].toString() else eventDate.substring(0..1)).toInt()
             val dateM = (if (eventDate[1] == '.') eventDate.substring(2..(eventDate.length - 1)) else eventDate.substring(3..(eventDate.length - 1))).toInt()
             val eventTime = findViewById<EditText>(R.id.textEventTime).text
             val timeH = (if (eventDate[1] == '.') eventTime[0].toString() else eventTime.substring(0..1)).toInt()
             val timeM = (if (eventDate[1] == '.') eventTime.substring(2..(eventTime.length - 1)) else eventTime.substring(3..(eventTime.length - 1))).toInt()
-            val eventDesc = findViewById<EditText>(R.id.textEventDescription).text.toString()
+            var eventDesc = findViewById<EditText>(R.id.textEventDescription).text.toString()
+            if (eventName == "") eventName = "Безымянное событие"
+            if (eventDesc == "") eventDesc = "Описания нет."
+
 
             val url = "http://q9315385.beget.tech/meetmap/api/event/create.php"
             val payload = mapOf("name" to eventName,
