@@ -44,6 +44,19 @@ data class eventObject(
         val timeM: Int
 )
 
+data class jsonEventObject(
+        val id: String,
+        val name: String,
+        val owner: String,
+        val tinyPic: String,
+        val latitude: String,
+        val longitude: String,
+        val dateM: String,
+        val dateD: String,
+        val timeH: String,
+        val timeM: String
+)
+
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickListener, GoogleMap.OnMapClickListener {
 
@@ -109,7 +122,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                 mapObjects?.add(eventObject(4, "memes4", "memelord", "mem.png", 51.530373, 46.014223, 5, 11, 17, 51))
             } else {
                 // mocky:
-                val resp = khttp.async.get("http://q9315385.beget.tech/meetmap/api/event/read.php", headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"), onError = {
+                val resp = khttp.async.get("http://q9315385.beget.tech/meetmap/api/event/read.php",
+                        headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"), onError = {
                      println("Error message: $message")
                 }) {
                     println(this.headers)
@@ -119,7 +133,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                     JsonReader(StringReader(this.text)).use { reader ->
                         reader.beginArray {
                             while (reader.hasNext()) {
-                                val thisEvent = klaxon.parse<eventObject>(reader)!!
+                                val thisJsonEvent = klaxon.parse<jsonEventObject>(reader)!!
+                                val thisEvent = eventObject(thisJsonEvent.id.toInt(), thisJsonEvent.name, thisJsonEvent.owner, thisJsonEvent.tinyPic,
+                                        thisJsonEvent.latitude.toDouble(), thisJsonEvent.longitude.toDouble(), thisJsonEvent.dateM.toInt(),
+                                        thisJsonEvent.dateD.toInt(), thisJsonEvent.timeH.toInt(), thisJsonEvent.timeM.toInt())
                                 mapObjects.add(thisEvent)
                                 // println("Event should be added")
                             }
