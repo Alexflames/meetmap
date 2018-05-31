@@ -86,8 +86,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
         // Add a marker in Saratov and move the camera
         val thisEventLat = intent.getDoubleExtra("latitudeCoord", 51.533373)
         val thisEventLng = intent.getDoubleExtra("longitudeCoord", 46.020923)
-        println(thisEventLat)
-        println(thisEventLng)
 
         clickMarker = mMap.addMarker(MarkerOptions()
                 .position(LatLng(thisEventLat, thisEventLng))
@@ -110,10 +108,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                 mapObjects?.add(eventObject(3, "memes3", "memelord", "mem.png", 51.531373, 46.019223, 5, 11, 17, 51))
                 mapObjects?.add(eventObject(4, "memes4", "memelord", "mem.png", 51.530373, 46.014223, 5, 11, 17, 51))
             } else {
-                khttp.async.get("http://www.mocky.io/v2/5af5c5833100002c000025c8", onError = {
+                // mocky:
+                val resp = khttp.async.get("http://q9315385.beget.tech/meetmap/api/event/read.php", headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"), onError = {
                     // println("Error message: $message")
                 }) {
-                    // println("Status Code: $statusCode")
+                    println(this.headers)
+                    println("Status Code: $statusCode")
                     // println("Response Text: $text")
                     val klaxon = Klaxon()
                     JsonReader(StringReader(this.text)).use { reader ->

@@ -25,7 +25,7 @@ class CreateEventActivity : AppCompatActivity() {
 
         val btn_create = findViewById<FloatingActionButton>(R.id.buttonCreate)
         btn_create.setOnClickListener{
-            val eventName = findViewById<EditText>(R.id.textEventName).text.toString()
+            val eventName = findViewById<EditText>(R.id.textEventName).text
             val eventDate = findViewById<EditText>(R.id.textEventDate).text
             val dateD = (if (eventDate[1] == '.') eventDate[0].toString() else eventDate.substring(0..1)).toInt()
             val dateM = (if (eventDate[1] == '.') eventDate.substring(2..(eventDate.length - 1)) else eventDate.substring(3..(eventDate.length - 1))).toInt()
@@ -34,7 +34,7 @@ class CreateEventActivity : AppCompatActivity() {
             val timeM = (if (eventDate[1] == '.') eventTime.substring(2..(eventTime.length - 1)) else eventTime.substring(3..(eventTime.length - 1))).toInt()
             val eventDesc = findViewById<EditText>(R.id.textEventDescription).text.toString()
 
-            val url = "http://www.mocky.io/v2/5af9b9ad2e00008c00278d5b"
+            val url = "http://q9315385.beget.tech/meetmap/api/event/create.php"
             val payload = mapOf("name" to eventName,
                     "dateD" to dateD,
                     "dateM" to dateM,
@@ -46,10 +46,10 @@ class CreateEventActivity : AppCompatActivity() {
                     "picture" to "smth",
                     "latitude" to thisEventLat,
                     "longitude" to thisEventLng)
-            async.post(url, json=payload,
+            async.post(url, json=payload, headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"),
                     onResponse = {
-                        println(thisEventLat)
-                        println(thisEventLng)
+                        println("Post request info: " + this.statusCode)
+                        println(this.text)
                         var intent = Intent(this@CreateEventActivity, MapActivity::class.java)
                         intent.putExtra("hasCoordinates", 0)
                         intent.putExtra("longitudeCoord", thisEventLng)

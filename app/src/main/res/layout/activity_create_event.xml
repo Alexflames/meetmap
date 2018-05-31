@@ -62,7 +62,6 @@
         android:ems="10"
         android:hint="Описание события"
         android:inputType="textMultiLine"
-        android:text="What is love? Baby dont hurt me"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
