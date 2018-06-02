@@ -1,16 +1,16 @@
 package com.example.test.meetmap
 
 import android.content.Intent
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.beust.klaxon.JsonReader
 import com.beust.klaxon.Klaxon
-import com.example.test.meetmap.MapActivity
-import com.example.test.meetmap.R
+import com.example.test.meetmap.R.id.eventDateText
+import kotlinx.android.synthetic.main.activity_create_event.*
 import kotlinx.android.synthetic.main.event_info.*
-import java.io.StringReader
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class EventInfoActivity : AppCompatActivity() {
@@ -45,6 +45,27 @@ class EventInfoActivity : AppCompatActivity() {
     var eventInformation:EventInfoObj = EventInfoObj("noname",1,1,1,1
             , 1,"succ", "nobody", "pic", 1.0, 2.0)
 
+    fun getTimeString(h :String, m : String) :String{
+        var resH = h
+        var resM = m
+        if (h.isEmpty()) resH = "00"
+        else if (h.length < 2) resH = "0" + h
+        if (m.isEmpty()) resM = "00"
+        else if (m.length < 2) resM = "0" + m
+        return resH + ":" + resM
+    }
+
+    fun getDateString(d :String, m : String, y : String) :String{
+        var resD = d
+        var resM = m
+        if (d.isEmpty()) resD = "00"
+        else if (d.length < 2) resD = "0" + d
+        if (m.isEmpty()) resM = "00"
+        else if (m.length < 2) resM = "0" + m
+
+        return resD + "-" + resM + "-" + y
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.event_info)
@@ -60,8 +81,13 @@ class EventInfoActivity : AppCompatActivity() {
                     jsonEventInf.timeH.toInt(), jsonEventInf.timeM.toInt(), jsonEventInf.description, jsonEventInf.owner,
                     jsonEventInf.picture, jsonEventInf.latitude.toDouble(), jsonEventInf.longitude.toDouble())
             runOnUiThread {
-                textView.text = eventInformation.description
-                textView2.text = eventInformation.owner
+                eventDateText.text = getDateString(eventInformation.dateD.toString(),
+                        eventInformation.dateM.toString(), eventInformation.dateY.toString())
+                eventTimeText.text = getTimeString(eventInformation.timeH.toString(),
+                        eventInformation.timeM.toString())
+                ownerNameText.text = eventInformation.owner
+                eventDescriptionText.text = eventInformation.description
+                eventNameText.text = eventInformation.name
                 progressBar.visibility = View.INVISIBLE
             }
         }

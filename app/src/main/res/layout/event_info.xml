@@ -10,30 +10,34 @@
     <WebView
         android:id="@+id/webView"
         android:layout_width="235dp"
-        android:layout_height="232dp"
+        android:layout_height="209dp"
+        android:layout_marginBottom="256dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/eventNameText" />
 
     <ImageButton
         android:id="@+id/imageButton7"
         android:layout_width="78dp"
         android:layout_height="78dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="36dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:onClick="getEventLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/webView"
+        app:layout_constraintBottom_toBottomOf="@+id/webView"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton10"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="@+id/imageButton10"
         app:layout_constraintTop_toBottomOf="@+id/imageButton10"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@mipmap/geo_location_button" />
 
     <ImageButton
@@ -44,39 +48,57 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toEndOf="@+id/webView"
         app:layout_constraintTop_toTopOf="@+id/webView"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="350dp"
-        android:layout_height="169dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/webView" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="351dp"
-        android:layout_height="56dp"
+        android:id="@+id/eventDescriptionText"
+        android:layout_width="336dp"
+        android:layout_height="130dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/my_border"
+        android:paddingLeft="5dp"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/ownerLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.932" />
+        app:layout_constraintTop_toBottomOf="@+id/webView"
+        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+        <!--android:background="#eeeeee"-->
+
+    <TextView
+        android:id="@+id/ownerNameText"
+        android:layout_width="227dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/my_border"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ownerLabel" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDescriptionText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -94,6 +116,134 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
+        app:layout_constraintVertical_bias="0.601" />
+
+    <TextView
+        android:id="@+id/ownerLabel"
+        android:layout_width="87dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Организатор"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:text="Дата проведения"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/eventDateText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/eventDateText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/webView" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="107dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Время начала"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/eventTimeText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/webView"
+        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintBottom_toTopOf="@+id/eventTimeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintStart_toEndOf="@+id/dateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/webView" />
+
+    <TextView
+        android:id="@+id/eventDateText"
+        android:layout_width="115dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/my_border"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/eventTimeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toEndOf="@+id/eventTimeText"
+        app:layout_constraintTop_toTopOf="@+id/eventTimeText"
+        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/eventTimeText"
+        android:layout_width="107dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/my_border"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintStart_toEndOf="@+id/eventDateText" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Описание события:"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/eventNameText"
+        android:layout_width="351dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
 </android.support.constraint.ConstraintLayout>
