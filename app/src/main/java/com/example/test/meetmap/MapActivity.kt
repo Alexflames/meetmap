@@ -95,6 +95,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
 
         // Add a marker in Saratov and move the camera
         val thisEventLat = intent.getDoubleExtra("latitudeCoord", 51.533373)
@@ -121,7 +122,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                 mapObjects?.add(eventObject(3, "memes3", "memelord", "mem.png", 51.531373, 46.019223, 5, 11, 17, 51))
                 mapObjects?.add(eventObject(4, "memes4", "memelord", "mem.png", 51.530373, 46.014223, 5, 11, 17, 51))
             } else {
-                // mocky:
                 val resp = khttp.async.get("http://q9315385.beget.tech/meetmap/api/event/read.php",
                         headers=mapOf("User-Agent" to "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)"), onError = {
                      println("Error message: $message")
@@ -152,7 +152,22 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                 // println("Timer - CLICK")
                 for (i in lastSize until mapObjects!!.size) {
                     val eventToShow = mapObjects[i]
-                    val eventText = "ID: ${eventToShow.id}"
+                    val dateDNorm =
+                            if (eventToShow.dateD > 9) eventToShow.dateD.toString()
+                            else ("0" + eventToShow.dateD.toString())
+                    val dateMNorm =
+                            if (eventToShow.dateM > 9) eventToShow.dateM.toString()
+                            else ("0" + eventToShow.dateM.toString())
+                    val timeHNorm =
+                            if (eventToShow.timeH > 9) eventToShow.timeH.toString()
+                            else ("0" + eventToShow.timeH.toString())
+                    val timeMNorm =
+                            if (eventToShow.timeM > 9) eventToShow.timeM.toString()
+                            else ("0" + eventToShow.timeM.toString())
+                    val eventText = "Начало: " +
+                            dateDNorm + "." + dateMNorm + ", в " + timeHNorm + ":" + timeMNorm +
+                            "\nОрганизатор: ${eventToShow.owner}"
+
                     // println("Event: $i $eventToShow ")
 
                     runOnUiThread {

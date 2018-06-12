@@ -36,7 +36,6 @@ class CreateEventActivity : AppCompatActivity() {
             if (eventName == "") eventName = "Безымянное событие"
             if (eventDesc == "") eventDesc = "Описания нет."
 
-
             val url = "http://q9315385.beget.tech/meetmap/api/event/create.php"
             val payload = mapOf("name" to eventName,
                     "dateD" to dateD,
