@@ -164,7 +164,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnInfoWindowClickLi
                     val timeMNorm =
                             if (eventToShow.timeM > 9) eventToShow.timeM.toString()
                             else ("0" + eventToShow.timeM.toString())
-                    val eventText = "Начало: " +
+                    val eventText = "Начало:            " +
                             dateDNorm + "." + dateMNorm + ", в " + timeHNorm + ":" + timeMNorm +
                             "\nОрганизатор: ${eventToShow.owner}"
 

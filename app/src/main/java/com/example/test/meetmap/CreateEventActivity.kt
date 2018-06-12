@@ -27,11 +27,13 @@ class CreateEventActivity : AppCompatActivity() {
         btn_create.setOnClickListener{
             var eventName = findViewById<EditText>(R.id.textEventName).text.toString()
             val eventDate = findViewById<EditText>(R.id.textEventDate).text
-            val dateD = (if (eventDate[1] == '.') eventDate[0].toString() else eventDate.substring(0..1)).toInt()
-            val dateM = (if (eventDate[1] == '.') eventDate.substring(2..(eventDate.length - 1)) else eventDate.substring(3..(eventDate.length - 1))).toInt()
+            val datePointPos = eventDate.indexOf('.')
+            val dateD = eventDate.substring(0 until datePointPos).toInt()
+            val dateM = eventDate.substring((datePointPos + 1) until eventDate.length).toInt()
             val eventTime = findViewById<EditText>(R.id.textEventTime).text
-            val timeH = (if (eventDate[1] == '.') eventTime[0].toString() else eventTime.substring(0..1)).toInt()
-            val timeM = (if (eventDate[1] == '.') eventTime.substring(2..(eventTime.length - 1)) else eventTime.substring(3..(eventTime.length - 1))).toInt()
+            val timePointPos = eventTime.indexOf(':')
+            val timeH = eventTime.substring(0 until timePointPos).toInt()
+            val timeM = eventTime.substring((timePointPos + 1) until eventTime.length).toInt()
             var eventDesc = findViewById<EditText>(R.id.textEventDescription).text.toString()
             if (eventName == "") eventName = "Безымянное событие"
             if (eventDesc == "") eventDesc = "Описания нет."
