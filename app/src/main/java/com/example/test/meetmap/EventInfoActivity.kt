@@ -11,6 +11,9 @@ import kotlinx.android.synthetic.main.event_info.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import android.text.method.ScrollingMovementMethod
+
+
 
 
 class EventInfoActivity : AppCompatActivity() {
@@ -86,6 +89,7 @@ class EventInfoActivity : AppCompatActivity() {
                 eventTimeText.text = getTimeString(eventInformation.timeH.toString(),
                         eventInformation.timeM.toString())
                 ownerNameText.text = eventInformation.owner
+                eventDescriptionText.setMovementMethod(ScrollingMovementMethod())
                 eventDescriptionText.text = eventInformation.description
                 eventNameText.text = eventInformation.name
                 progressBar.visibility = View.INVISIBLE
